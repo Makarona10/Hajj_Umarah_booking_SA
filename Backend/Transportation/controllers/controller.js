@@ -1,6 +1,33 @@
 const db = require("../DB/connection")
 const {validationResult} = require("express-validator")
 
+async function query_handler (sort, sign, u_construct) {
+    let seats = 0;
+
+    switch (sort) {
+        case "Ground":
+            seats = 30
+            break;
+        case "AIR":
+            seats = 80
+            break;
+        case "Nautical voy":
+            seats = 130
+            break;
+        default:
+            console.log("Wrong plan")
+            return false;
+          break;
+      }
+    const ret = await db.query(`UPDATE inventory
+            SET avail_units = avail_units - ?
+            , free_seats = free_seats - ? * ?
+            WHERE Type = ?`, [u_construct, sign, seats, sort])
+            .then(() => {return true})
+            .catch(() => {return false})
+    return ret;
+}
+
 const list_trans = async (req, res) => {
     try {
     const result = await db.query("SELECT * FROM inventory");
@@ -40,39 +67,13 @@ const edit_avail = async (req, res) => {
     }
     const sort = req.body.sort, u_construct = req.body.u_construct;
     const sign = u_construct > 0 ? 1 : (u_construct < 0 ? -1 : 0);
+
     try {
-        if (sort === "AIR") {
-            console.log("HEEY!")
-            db.query(`UPDATE inventory
-            SET avail_units = avail_units - ?
-            , free_seats = free_seats - ? * 80
-            WHERE Type = ?`, [u_construct, sign, sort]).then(result => {
-                return res.status(200).send({"msg": "Updated!"});
-            }).catch(err => {
-                return res.status(400).send(err)
-            })
-        }
-        else if (sort === "Ground") {
-            db.query(`UPDATE inventory
-            SET avail_units = avail_units - ?
-            , free_seats = free_seats - ? * 30
-            WHERE Type = ?`, [u_construct, sign, sort]).then(result => {
-                return res.status(200).send({"msg": "Updated!"});
-            }).catch(err => {
-                return res.status(400).send(err)
-            })
-        }
-        else if (sort === "Nautical voy") {
-            db.query(`UPDATE inventory
-            SET avail_units = avail_units - ?
-            , free_seats = free_seats - ? * 130
-            WHERE Type = ?`, [u_construct, sign, sort]).then(result => {
-                return res.status(200).send({"msg": "Updated!"});
-            }).catch(err => {
-                return res.status(400).send(err)
-            })
+        const ret = await query_handler (sort, sign, u_construct)
+        if (ret === true) {
+            return res.status(200).send({"msg": "Updated!"});
         } else {
-            return res.status(400).send("Please enter a valid transportaion plan")
+            return res.status(400).send({"msg": "ERROR"})
         }
     } catch (err) {
         return res.status(400).send(err)

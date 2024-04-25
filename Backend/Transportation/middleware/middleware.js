@@ -4,7 +4,9 @@ const body_valid =
     [
         body('sort')
             .notEmpty()
-            .withMessage("Please select a travalling plan")
+            .withMessage("Please select a travalling plan"),
+        body('u_construct')
+            .isInt()
     ]
 
 module.exports = {body_valid};
