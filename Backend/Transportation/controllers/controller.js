@@ -1,7 +1,8 @@
 const db = require("../DB/connection")
 const {validationResult} = require("express-validator")
 
-async function query_handler (sort, sign, u_construct) {
+// functions to abstract
+const query_handler = async (sort, sign, u_construct) => {
     let seats = 0;
 
     switch (sort) {
@@ -28,6 +29,12 @@ async function query_handler (sort, sign, u_construct) {
     return ret;
 }
 
+const avail_unit_check = async (free_seats, ) => {
+
+}
+
+
+// API functions
 const list_trans = async (req, res) => {
     try {
     const result = await db.query("SELECT * FROM inventory");
@@ -49,6 +56,9 @@ const reserve = async (req, res) => {
                     }).catch(err => {
                         return res.send(err)
                     })
+            if ((free%seats) === 0) {
+
+            }
         }
         else {
             return res.status(200).send({"msg": "No Free Seats"});
