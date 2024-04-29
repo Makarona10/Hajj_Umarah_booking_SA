@@ -1,8 +1,9 @@
-const {body} = require("express-validator")
+const {body, param} = require("express-validator");
+// const { param } = require("../routes/Transport.routes");
 
 const body_valid =
     [
-        body('sort')
+        param('sort')
             .notEmpty()
             .withMessage("Please select a travalling plan"),
         body('u_construct')
