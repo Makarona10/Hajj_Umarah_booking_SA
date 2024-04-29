@@ -1,4 +1,3 @@
-
 const router = require("express").Router();
 const conn = require("../db/dbConnection");
 const authorized = require("../middleware/authorize");
@@ -9,25 +8,23 @@ const util = require("util"); // helper
 const fs = require("fs"); // file system
 const multer = require("multer");
 //const upload = multer({ dest: 'uploads/' });
-// CREATE  [ADMIN]
+// CREATE Umrah [ADMIN]
 router.post(
   "/create",
-
-
-  upload.single('image'),
+  upload.single("image"),
   body("name")
     .isString()
-    .withMessage("please enter a valid name")
+    .withMessage("Please enter a valid name")
     .isLength({ min: 5 }),
   body("from_where")
     .isString()
-    .withMessage("please enter a valid city name")
+    .withMessage("Please enter a valid city name")
     .isLength({ min: 5 }),
   body("to_where")
     .isString()
-    .withMessage("please enter a valid city name")
+    .withMessage("Please enter a valid city name")
     .isLength({ min: 5 }),
-  body("ticet_Price"),
+  body("ticket_price"),
 
   body("day_and_time").isLength({ min: 5 }),
 
@@ -43,15 +40,14 @@ router.post(
         return res.status(400).json({
           errors: [
             {
-              msg: "Image is Required",
+              msg: "Image is required",
             },
           ],
         });
       }
 
-      // 3- PREPARE Appointment OBJECT
-      const appointment = {
-
+      // 3- PREPARE Umrah OBJECT
+      const umrah = {
         name: req.body.name,
         from_where: req.body.from_where,
         to_where: req.body.to_where,
@@ -60,11 +56,11 @@ router.post(
         image: req.file.filename,
       };
 
-      // 4 - INSERT appointment INTO DB
+      // 4 - INSERT Umrah INTO DB
       const query = util.promisify(conn.query).bind(conn);
-      await query("insert into appointments set ? ", appointment);
+      await query("INSERT INTO umrahs SET ?", umrah);
       res.status(200).json({
-        msg: "created successfully !",
+        msg: "Umrah created successfully!",
       });
     } catch (err) {
       res.status(500).json(err);
@@ -72,7 +68,7 @@ router.post(
   }
 );
 
-// UPDATE Appointment [ADMIN]
+// UPDATE Umrah [ADMIN]
 router.put(
   "/:id",
 
@@ -80,17 +76,17 @@ router.put(
   admin,
   body("name")
     .isString()
-    .withMessage("please enter a valid name")
+    .withMessage("Please enter a valid name")
     .isLength({ min: 5 }),
   body("from_where")
     .isString()
-    .withMessage("please enter a valid city name")
+    .withMessage("Please enter a valid city name")
     .isLength({ min: 5 }),
   body("to_where")
     .isString()
-    .withMessage("please enter a valid city name")
+    .withMessage("Please enter a valid city name")
     .isLength({ min: 5 }),
-  body("ticet_Price"),
+  body("ticket_price"),
 
   body("day_and_time").isLength({ min: 5 }),
 
@@ -103,18 +99,16 @@ router.put(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      // 2- CHECK IF Appointment EXISTS OR NOT
-      const appointment = await query(
-        "select * from appointments where id = ?",
-        [req.params.id]
-      );
-      if (!appointment[0]) {
-        res.status(404).json({ ms: "appointment not found !" });
+      // 2- CHECK IF Umrah EXISTS OR NOT
+      const umrah = await query("SELECT * FROM umrahs WHERE id = ?", [
+        req.params.id,
+      ]);
+      if (!umrah[0]) {
+        res.status(404).json({ msg: "Umrah not found!" });
         return;
       }
 
-
-      const appointmentObj = {
+      const umrahObj = {
         name: req.body.name,
         from_where: req.body.from_where,
         to_where: req.body.to_where,
@@ -122,14 +116,10 @@ router.put(
         day_and_time: req.body.day_and_time,
       };
 
-
-      await query("update appointments set ? where id = ?", [
-        appointmentObj,
-        appointment[0].id,
-      ]);
+      await query("UPDATE umrahs SET ? WHERE id = ?", [umrahObj, umrah[0].id]);
 
       res.status(200).json({
-        msg: "appointment updated successfully",
+        msg: "Umrah updated successfully",
       });
     } catch (err) {
       res.status(500).json(err);
@@ -137,7 +127,7 @@ router.put(
   }
 );
 
-// DELETE APPOINTMENT [ADMIN]
+// DELETE Umrah [ADMIN]
 router.delete(
   "/:id", // params
   admin,
@@ -149,19 +139,18 @@ router.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      // 2- CHECK IF Appointment EXISTS OR NOT
-      const appointment = await query(
-        "select * from appointments where id = ?",
-        [req.params.id]
-      );
-      if (!appointment[0]) {
-        res.status(404).json({ ms: "appointment not found !" });
+      // 2- CHECK IF Umrah EXISTS OR NOT
+      const umrah = await query("SELECT * FROM umrahs WHERE id = ?", [
+        req.params.id,
+      ]);
+      if (!umrah[0]) {
+        res.status(404).json({ msg: "Umrah not found!" });
         return;
       }
 
-      await query("delete from appointments where id = ?", [appointment[0].id]);
+      await query("DELETE FROM umrahs WHERE id = ?", [umrah[0].id]);
       res.status(200).json({
-        msg: "Appointment delete successfully",
+        msg: "Umrah deleted successfully",
       });
     } catch (err) {
       res.status(500).json(err);
@@ -169,49 +158,34 @@ router.delete(
   }
 );
 
-// LIST & SEARCH [ADMIN, USER]
+// LIST & SEARCH Umrah [ADMIN, USER]
 router.get("/show", async (req, res) => {
   const query = util.promisify(conn.query).bind(conn);
   let search = "";
   if (req.query.search) {
     // QUERY PARAMS
     //res.json(req.query)
-    search = `where from_where LIKE '%${req.query.search}%' or to_where LIKE '%${req.query.search}%'`;
+    search = `WHERE from_where LIKE '%${req.query.search}%' OR to_where LIKE '%${req.query.search}%'`;
   }
-  const appointments = await query(`select * from appointments ${search}`);
-  appointments.map((appointment) => {
-    appointment.image = "http://" + req.hostname + ":4000/" + appointment.image;
-
+  const umrahs = await query(`SELECT * FROM umrahs ${search}`);
+  umrahs.map((umrah) => {
+    umrah.image = "http://" + req.hostname + ":4000/" + umrah.image;
   });
 
-  res.status(200).json(appointments);
+  res.status(200).json(umrahs);
 });
 
-// SHOW Appointment [ADMIN, USER]
-/*router.get("/getone/:id", async (req, res) => {
-  const query = util.promisify(conn.query).bind(conn);
-  const appointment = await query("select * from appointments where id = ?", [
-    req.params.id,
-  ]);
-  if (!appointment[0]) {
-    res.status(404).json({ ms: "appointment not found !" });
-  }
-
-  //appointment[0].image = "http://" + req.hostname + ":4000/" + appointment[0].image;
-  res.status(200).json(appointment[0]);
-});*/
-
-//SHOW ALL
+// SHOW ALL Umrah
 router.get("/all", async (req, res) => {
   const query = util.promisify(conn.query).bind(conn);
-  const appointment = await query("select * from appointments");
-  if (!appointment[0]) {
-    res.status(404).json({ ms: "appointment not found !" });
+  const umrahs = await query("SELECT * FROM umrahs");
+  if (!umrahs[0]) {
+    res.status(404).json({ msg: "No Umrah found!" });
   }
-  appointment.map((a) => {
-    a.image = "http://" + req.hostname + ":4000/" + a.image;
+  umrahs.map((u) => {
+    u.image = "http://" + req.hostname + ":4000/" + u.image;
   });
-  res.status(200).json(appointment);
+  res.status(200).json(umrahs);
 });
 
 module.exports = router;
