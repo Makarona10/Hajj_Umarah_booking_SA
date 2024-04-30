@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const conn = require("../db/dbConnection");
+const conn = require("../../db/dbConnection");
 const util = require("util");
 const bcrypt = require("bcrypt");
 const { register } = require("module");
@@ -113,4 +113,15 @@ const logout = async (req, res) => {
     });
 }
 
-module.exports = { postLogin, register, logout}
+// Hash password function
+const hashPassword = (password) => {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+};
+
+// Generate token function
+const generateToken = () => {
+    return crypto.randomBytes(20).toString("hex");
+};
+
+module.exports = { postLogin, register, logout, hashPassword, generateToken }
