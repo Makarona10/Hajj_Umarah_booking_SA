@@ -19,6 +19,7 @@ const auth = require("./routes/Auth");
 const appointments = require("./routes/Appointments");
 const request = require("./routes/Request");
 const travelers = require("./routes/Traveler");
+const transport = require("./Transportation/routes/Transport.routes")
 
 // ====================  API ROUTES [ ENDPOINTS ]  ====================
 app.use(
@@ -44,8 +45,9 @@ app.use("/auth", auth);
 app.use("/appointments", appointments);
 app.use("/traveler", travelers);
 app.use("/request", request);
+app.use("/transport", transport)
 
 // ====================  RUN THE APP  ====================
 app.listen(4000, "localhost", () => {
-  console.log("SERVER IS RUNNING ");
+  console.log("SERVER IS RUNNING");
 });
