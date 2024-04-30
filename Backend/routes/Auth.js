@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const { body, validationResult } = require("express-validator");
-
 const conn = require("../db/dbConnection");
 const util = require("util"); // helper
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
+
 
 const authController = require("../controllers/auth");
 
