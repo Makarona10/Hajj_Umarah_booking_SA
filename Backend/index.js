@@ -14,9 +14,9 @@ app.use(express.static("upload"));
 // app.use(cors()); // ALLOW HTTP REQUESTS LOCAL HOSTS
 
 // ====================  Required Module ====================
-const auth = require("./routes/Auth");
+const auth = require("./login_register/routes/Reg.routes");
 const appointments = require("./routes/Appointments");
-const request = require("./Request/Request.routes");
+const request = require("./Request/routes/Request.routes");
 const travelers = require("./routes/Traveler");
 const transport = require("./Transportation/routes/Transport.routes")
 

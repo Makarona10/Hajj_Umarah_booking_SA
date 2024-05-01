@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const controller = require("./Request.controller")
+const controller = require("../controller/Request.controller")
 
 
 router.post("/create/:appid/:userid", controller.create);
