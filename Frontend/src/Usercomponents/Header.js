@@ -22,10 +22,13 @@ const Header = () => {
 			</div>
 			<nav className='navigation-menu'>
 				{auth && isAdmin() && <Link to='/managetrav'>Manage Travelers</Link>}
+				{auth && isAdmin() && <Link to='/manageHajjappoint'>manage Hajj appointments</Link>}
+				{auth && isAdmin() && <Link to='/manageumrahappoint'>Manage Umrah appointments</Link>}
 				{auth && isAdmin() && (
-					<Link to='/manageappoint'>Manage Appointments</Link>
+					<Link to='/transportation'>Manage Transportation</Link>
 				)}
-				<Link to='/tickets'>Tickets</Link>
+				<Link to='/hajjtickets'>Hajj Tickets</Link>
+				<Link to='/umrahtickets'>Umrah Tickets</Link>
 				{auth && <Link to='/profile'>Profile</Link>}
 
 				{auth && (
