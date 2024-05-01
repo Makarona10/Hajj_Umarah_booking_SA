@@ -44,7 +44,7 @@ function Login() {
 				console.log('it should navigate to ManageAppointments');
 				navigate('/managetrav');
 			} else {
-				navigate('/tickets');
+				navigate('/hajjtickets');
 			}
 		} catch (err) {
 			const errors = err.response.data;
