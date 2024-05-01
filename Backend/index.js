@@ -11,7 +11,6 @@ const mysql = require('mysql');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // TO ACCESS URL FORM ENCODED ==> based on bofy parser to be jason
 app.use(express.static("upload"));
-// const cors = require("cors");
 // app.use(cors()); // ALLOW HTTP REQUESTS LOCAL HOSTS
 
 // ====================  Required Module ====================
