@@ -38,6 +38,7 @@ const EditTrans = ({ sort, onEditTrans }) => {
     // }
     async function handleSubmit(e) {
         e.preventDefault();
+        hideEdit();
 
     }
 
@@ -75,7 +76,7 @@ const EditTrans = ({ sort, onEditTrans }) => {
         }
     }
     function hideEdit() {
-
+        console.log("hide")
         const x = document.getElementById('edit-modal');
         x.style.display = 'none';
 
@@ -86,8 +87,8 @@ const EditTrans = ({ sort, onEditTrans }) => {
         <form id='edit-modal' onSubmit={handleSubmit}
             className={classes['edit-modal']}>
 
-            <button onClick={construct}> Add unit to under Constraction</button>
-            <button onClick={finish_construct}>Remove unit from under Constraction</button>
+            <button type='button' onClick={construct}> Add unit to under Constraction</button>
+            <button type='button' onClick={finish_construct}>Remove unit from under Constraction</button>
 
             <button className={classes['btn-save']} type='submit'>
                 Save
