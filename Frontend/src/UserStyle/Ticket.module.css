@@ -26,6 +26,19 @@
 	transform: scale(1.1);
 }
 
+.trans {
+	background: #fff;
+	/* padding: 34px; */
+
+	padding-bottom: 10px;
+	padding-right: 10px;
+	border-radius: 6px;
+	box-shadow: 0 0px 5px 5px rgba(0, 0, 0, 0.2);
+	height: 150px;
+	padding-top: 20px;
+
+}
+
 .ticket {
 	background: #fff;
 	/* padding: 34px; */
@@ -34,7 +47,7 @@
 	padding-right: 10px;
 	border-radius: 6px;
 	box-shadow: 0 0px 5px 5px rgba(0, 0, 0, 0.2);
-	margin-bottom: 2rem;
+	margin-bottom: 4rem;
 
 	width: 400px;
 	height: 550px;
