@@ -2,12 +2,13 @@ const router = require("express").Router();
 const { body, validationResult, check } = require("express-validator");
 const conn = require("../../db/dbConnection");
 const authController = require("../controllers/Reg.controllers");
+const m_ware = require("../middleware/Reg.middlewares");
 // Express Import
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 // File modules
 const conn = require("../../db/dbConnection");
-const admin = require("../../middleware/admin");
+// const admin = require("../../middleware/admin");
 const util = require("util");
 
 // LOGIN
@@ -25,15 +26,7 @@ router.post(
 // REGISTRATION
 router.post(
   "/register",
-  body("email").isEmail().withMessage("please enter a valid email!"),
-  body("name")
-    .isString()
-    .withMessage("please enter a valid name")
-    .isLength({ min: 3, max: 20 })
-    .withMessage("name should be between (3-20) character"),
-  body("password")
-    .isLength({ min: 8, max: 12 })
-    .withMessage("password should be between (8-12) character"),
+  m_ware.reg_validation,
   authController.register
 );
 
@@ -41,46 +34,10 @@ router.put("/logout/:id", authController.logout);
 
 //////////////////////////////////////////////
 
-router.post(
-  "/create",
-  admin,
-  [
-    check("name").notEmpty().withMessage("Name is required"),
-    check("email")
-      .notEmpty()
-      .withMessage("Email is required")
-      .isEmail()
-      .withMessage("Email is not valid"),
-    check("password").notEmpty().withMessage("Password is required"),
-    check("phone").notEmpty().withMessage("Phone number is required"),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { name, email, password, phone } = req.body;
-    const hashedPassword = authController.hashPassword(password);
-    const token = authController.generateToken;
-
-    const user = {
-      name,
-      email,
-      password: hashedPassword,
-      phone,
-      token,
-    };
-
-    conn.query("INSERT INTO users SET ?", user, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.status(201).json({ message: "User created successfully" });
-      }
-    });
-  }
+router.post("/create",
+  m_ware.admin,
+  m_ware.create_validation,
+  authController.create_user
 );
 
 // UPDATE Appointment [ADMIN]

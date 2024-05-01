@@ -124,4 +124,33 @@ const generateToken = () => {
     return crypto.randomBytes(20).toString("hex");
 };
 
-module.exports = { postLogin, register, logout, hashPassword, generateToken }
+const create_user = (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, email, password, phone } = req.body;
+    const hashedPassword = authController.hashPassword(password);
+    const token = authController.generateToken;
+
+    const user = {
+        name,
+        email,
+        password: hashedPassword,
+        phone,
+        token,
+    };
+
+    conn.query("INSERT INTO users SET ?", user, (err, result) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.status(201).json({ message: "User created successfully" });
+        }
+    });
+}
+
+
+module.exports = { postLogin, register, logout, hashPassword, generateToken, create_user }
