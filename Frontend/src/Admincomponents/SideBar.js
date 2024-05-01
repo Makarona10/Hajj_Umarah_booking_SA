@@ -15,8 +15,12 @@ const SideBar = () => {
 			<p className={classes['logo-name']}> Hajj&Umara</p>
 			<ul className={classes['nav-list']}>
 				<li>
-					<Link className={classes['link_name']} to='/manageappoint'>
-						Appointments
+					<Link className={classes['link_name']} to='/manageHajjappoint'>
+						Hajj Appointments
+					</Link>
+
+					<Link className={classes['link_name']} to='/manageUmrahappoint'>
+						Umra Appointments
 					</Link>
 				</li>
 				<li>
@@ -27,6 +31,12 @@ const SideBar = () => {
 				<li>
 					<Link className={classes['link_name']} to='/requests'>
 						Requests
+					</Link>
+				</li>
+
+				<li>
+					<Link className={classes['link_name']} to='/transportation'>
+						Transportation
 					</Link>
 				</li>
 
