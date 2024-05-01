@@ -1,15 +1,9 @@
 const router = require("express").Router();
-const { body, validationResult, check } = require("express-validator");
-const conn = require("../../db/dbConnection");
+const { body } = require("express-validator");
 const authController = require("../controllers/Reg.controllers");
 const m_ware = require("../middleware/Reg.middlewares");
-// Express Import
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
 // File modules
 const conn = require("../../db/dbConnection");
-// const admin = require("../../middleware/admin");
-const util = require("util");
 
 // LOGIN
 router.post(
