@@ -1,0 +1,34 @@
+version: "3"
+services:
+  
+  hajjs_service:
+    build: ./hajjs_service
+    container_name: hajjs_service_container
+    ports:
+      - "5000:5000"
+    networks:
+      - ecommerce-app
+    links:
+      - hajjs_db
+    restart: on-failure
+    depends_on:
+      - hajjs_db
+    volumes:
+      - ./hajjs_service:/app
+      - /app/node_modules
+  hajjs_db:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-app
+    volumes:
+      - hajjs-volume:/data/db
+  
+networks:
+  ecommerce-app:
+    driver: bridge
+volumes:
+  hajjs-volume:
+    driver: local
+ 
