@@ -20,9 +20,4 @@ route.route('/modify/:sort')
 route.route('/units')    
     .post(body_valid, controller.add_rem_units)
 
-
-app.listen(4001, () => {
-    console.log("Listening on port: 4001");
-})
-
 module.exports = route;

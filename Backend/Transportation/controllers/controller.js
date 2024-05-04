@@ -123,7 +123,7 @@ const add_rem_units = async (req, res) => {
             res.send("Inventory updated successfully!")
         } catch (err) {
             console.log(err)
-            res.status(400).send({"msg": "Can't update, Please make sure of correctness of the query"})
+            res.status(400).send({msg: "Can't take it out, this unit is already in use"})
         }
     }
 }
