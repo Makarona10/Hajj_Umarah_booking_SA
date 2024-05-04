@@ -1,4 +1,4 @@
-const conn = require("../../db/dbConnection");
+const conn = require("../db/dbConnection");
 const util = require("util");
 
 const create = async (req, res) => {

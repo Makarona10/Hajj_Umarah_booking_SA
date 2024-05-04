@@ -1,16 +1,13 @@
-FROM node:20.8.1
-
-RUN npm install -g nodemon
+FROM node:alpine
 
 WORKDIR /app
 
-COPY ./package.json ./
-COPY ./yarn.lock ./
+COPY package.json ./
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
 EXPOSE 3002
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
