@@ -1,14 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ManagTrav from './Admincomponents/ManagTrav';
 import Show from './Admincomponents/Show';
-import Ma from './Admincomponents/Managapp';
+import Ma from './Admincomponents/ManagHajjapp';
+import Manageumrahapp from './Admincomponents/ManageUmrahapp';
 import Requests from './Admincomponents/Requests';
-import Tickets from './Usercomponents/Tickets';
+import Tickets from './Usercomponents/HajjTickets';
+import UmrahTickets from './Usercomponents/UmrahTickets';
 import Profile from './Usercomponents/Profile';
 import HistoryTickets from './Usercomponents/HistoryTickets';
 import Login from './shared/login';
 import Register from './shared/register';
-
+import Transportation from './Admincomponents/Transportation'
 import { isAuthenticated, isAdmin } from './helper/Storage';
 
 export const router = createBrowserRouter([
@@ -25,16 +27,25 @@ export const router = createBrowserRouter([
 		element: <Show />,
 	},
 	{
-		path: '/manageappoint',
+		path: '/manageHajjappoint',
 		element: isAuthenticated() && isAdmin() ? <Ma /> : <Login />,
+	},
+
+	{
+		path: '/manageumrahappoint',
+		element: isAuthenticated() && isAdmin() ? <Manageumrahapp /> : <Login />,
 	},
 	{
 		path: '/requests',
 		element: isAuthenticated() && isAdmin() ? <Requests /> : <Login />,
 	},
 	{
-		path: '/tickets',
+		path: '/hajjtickets',
 		element: <Tickets />,
+	},
+	{
+		path: '/Umrahtickets',
+		element: <UmrahTickets />,
 	},
 	{
 		path: '/profile',
@@ -51,5 +62,9 @@ export const router = createBrowserRouter([
 	{
 		path: '/register',
 		element: <Register />,
+	},
+	{
+		path: '/transportation',
+		element: <Transportation />,
 	},
 ]);
