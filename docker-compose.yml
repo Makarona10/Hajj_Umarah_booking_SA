@@ -47,29 +47,28 @@ services:
   #     - ecommerce-app
   #   volumes:
   #     - omras-volume:/data/db
-  # users_service:
-  #   build: ./users_service
-  #   container_name: users_service_container
-  #   ports:
-  #     - "5002:5002"
-  #   networks:
-  #     - ecommerce-app
-  #   links:
-  #     - users_db
-  #   restart: on-failure
-  #   depends_on:
-  #     - users_db
-  #   volumes:
-  #     - ./users_service:/app
-  #     - /app/node_modules
-  # users_db:
-    # image: mongo:3.6.19-xenial
-    # ports:
-    #   - "27019:27017"
-    # networks:
-    #   - ecommerce-app
+  users_service:
+    build: ./Backend/users_service
+    container_name: users_service_container
+    ports:
+      - "5002:5002"
+    networks:
+      - ecommerce-app
+    links:
+      - users_db
+    depends_on:
+      - users_db
     # volumes:
-    #   - users-volume:/data/db
+    #   - ./users_service:/app
+    #   - /app/node_modules
+  users_db:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27019:27017"
+    networks:
+      - ecommerce-app
+    volumes:
+      - users-volume:/data/db
   transport:
     build: ./Backend/Transportation
     container_name: Transport_container

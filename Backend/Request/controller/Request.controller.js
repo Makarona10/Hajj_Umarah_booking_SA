@@ -23,7 +23,7 @@ const create = async (req, res) => {
 
 const list_all = async (req, res) => {
     const query = util.promisify(conn.query).bind(conn);
-    const requests = await query(
+    const requests = await conn.query(
         "SELECT appointment_requests.id, users.email, appointments.from_where, appointments.to_where ,appointment_requests.status, appointments.day_and_time  , appointments.max_number_of_travelers ,appointments.number_of_traveler , appointments.id as appid FROM appointment_requests join appointments join users WHERE appointment_id=appointments.id and traveler_id=users.id;"
     );
     if (!requests[0]) {
@@ -74,21 +74,21 @@ const decline_req = async (req, res) => {
     }
 }
 
-const list_history = async (req, res) => { //user id
-    const query = util.promisify(conn.query).bind(conn);
-    const appointment = await query(
-        "SELECT   appointment_requests.status , appointments.name , appointments.image ,appointments.id , appointments.from_where, appointments.to_where,appointments.ticket_price, appointments.day_and_time  FROM appointment_requests join appointments WHERE appointment_requests.traveler_id= ? and appointment_requests.appointment_id=appointments.id",
-        req.params.id
-    );
+// const list_history = async (req, res) => { //user id
+//     const query = util.promisify(conn.query).bind(conn);
+//     const appointment = await query(
+//         "SELECT   appointment_requests.status , appointments.name , appointments.image ,appointments.id , appointments.from_where, appointments.to_where,appointments.ticket_price, appointments.day_and_time  FROM appointment_requests join appointments WHERE appointment_requests.traveler_id= ? and appointment_requests.appointment_id=appointments.id",
+//         req.params.id
+//     );
 
-    if (!appointment) {
-        res.status(404).json({ ms: "appointment not found !" });
-    }
-    appointment.map((a) => {
-        a.image = "http://" + req.hostname + ":4000/" + a.image;
+//     if (!appointment) {
+//         res.status(404).json({ ms: "appointment not found !" });
+//     }
+//     appointment.map((a) => {
+//         a.image = "http://" + req.hostname + ":4000/" + a.image;
 
-    });
-    res.status(200).json(appointment);
-}
+//     });
+//     res.status(200).json(appointment);
+// }
 
-module.exports = {create, list_all, accept_req, decline_req, list_history}
+module.exports = {create, list_all, accept_req, decline_req}

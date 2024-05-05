@@ -18,7 +18,12 @@ connect.query(`CREATE TABLE IF NOT EXISTS inventory (
     avail_units BIGINT,
     seats BIGINT,
     free_seats BIGINT
-)`).then(() => console.log("CREATED!!")).catch((error) => console.log(error));
+)`).then(() => console.log("INVENTORY TABLE CREATED!!")).catch((error) => console.log(error));
+
+connect.query(`CREATE TABLE IF NOT EXISTS inventory (
+    ID INT PRIMARY KEY,
+    Username VARCHAR(255)
+    )`).then(() => console.log("USERS TABLE CREATED!!")).catch((error) => console.log(error));
 
 connect.query(`INSERT INTO inventory (Type, units, avail_units, seats, free_seats)
                 VALUES ("Ground", 0, 0, 0, 0),
