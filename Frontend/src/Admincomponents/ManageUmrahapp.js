@@ -19,7 +19,7 @@ const ManageAppointments = () => {
 	const getAllAppointments = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:4000/appointments/all`
+				`http://localhost:5001/omras`
 			);
 			setAppointments(response.data);
 			console.log(response.data);
@@ -43,7 +43,7 @@ const ManageAppointments = () => {
 	}
 	const handleDelete = async id => {
 		try {
-			await axios.delete(`http://localhost:4000/appointments/${id}`, {
+			await axios.delete(`http://localhost:5001/omra/${id}`, {
 				headers: {
 					token: auth.token,
 				},
@@ -89,14 +89,14 @@ const ManageAppointments = () => {
 									</td>
 									<td>
 										<div className={classes['btn-box']}>
-											<button className='edit' data-toggle='modal'>
+											{/* <button className='edit' data-toggle='modal'>
 												<i
 													className='material-icons'
 													title='Edit'
 													onClick={() => displayedit(appointment.id)}>
 													&#xE254;
 												</i>
-											</button>
+											</button> */}
 											<button className='delete' data-toggle='modal'>
 												<i
 													className='material-icons'
