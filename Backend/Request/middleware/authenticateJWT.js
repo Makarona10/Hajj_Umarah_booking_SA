@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const secretKey = 'secret_key'; // Same secret key used in users_service
+const db = require("../db/dbConnection")
 
 const authenticateJWT = (req, res, next) => {
     const token = req.headers.authorization;
@@ -14,6 +15,7 @@ const authenticateJWT = (req, res, next) => {
         }
         req.userId = decoded.userId;
         req.userEmail = decoded.email;
+        db.query(`INSERT INTO users values (req.userId, req.userEmail)`).then().catch();
         next();
     });
 };
