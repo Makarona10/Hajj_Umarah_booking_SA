@@ -19,7 +19,7 @@ const Ticket = (props) => {
 	const request = () => {
 		if (user) {
 			const id = user.id;
-			Axios.post(`http://localhost:4000/request/create/${props.id}/${id}`);
+			Axios.post(`http://localhost:3002/request/create/${props.id}/${id}`);
 		} else {
 			navigate('/login');
 		}
@@ -33,7 +33,7 @@ const Ticket = (props) => {
 		event.preventDefault();
 
 		try {
-			const response = await Axios.post('http://localhost:4001/transport/', { sort });
+			const response = await Axios.post('http://localhost:3001/transport/', { sort });
 
 			if (response.status === 200) {
 				const data = response.data;

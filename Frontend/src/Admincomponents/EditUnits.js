@@ -18,7 +18,7 @@ const EditUnits = ({ onEditTrans }) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:4001/transport/units', { sort, val });
+            const response = await axios.post('http://localhost:3001/transport/units', { sort, val });
             console.log(response.data); // Handle the response data as desired
             hideEdit();
             onEditTrans();

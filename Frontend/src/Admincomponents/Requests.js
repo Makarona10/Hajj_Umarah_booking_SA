@@ -41,10 +41,10 @@ const Requests = () => {
 	const acceptRequest = async (appid, reqid) => {
 		try {
 			await Axios.put(
-				'http://localhost:4000/request/accept/' + appid + '/' + reqid
+				'http://localhost:3002/request/accept/' + appid + '/' + reqid
 			);
 			setrequests({ ...requests, loading: true, reload: requests.reload + 1 });
-			
+
 			fetchAllRequest();
 			document.getElementById("diableacc").disabled = true;
 			document.getElementById("diablerej").disabled = true;
@@ -54,12 +54,12 @@ const Requests = () => {
 	};
 
 	const rejectRequest = async id => {
-		await Axios.put('http://localhost:4000/request/decline/' + id);
+		await Axios.put('http://localhost:3002/request/decline/' + id);
 		setrequests({ ...requests, loading: true, reload: requests.reload + 1 });
-		
+
 		fetchAllRequest();
 		document.getElementById("diableacc").disabled = true;
-    	document.getElementById("diablerej").disabled = true;
+		document.getElementById("diablerej").disabled = true;
 	};
 	return (
 		<div className={classes.wrapper}>
