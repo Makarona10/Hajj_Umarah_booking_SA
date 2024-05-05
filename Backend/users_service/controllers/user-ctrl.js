@@ -1,9 +1,9 @@
 const User = require('../models/user-model')
 const jwt = require('jsonwebtoken');
-const secretKey = 'secret_key'; 
+const secretKey = 'secret_key';
 //login user
 checkUserAuth = async (req, res) => {
-    const {username, password} = req.body;
+    const {username, password,email,phone} = req.body;
     const body = req.body;
 
     if (!body) {
@@ -31,31 +31,30 @@ checkUserAuth = async (req, res) => {
     })
 }
 //register user
-const registerUser = async (req, res) => {
-    const { username, password, email, phone } = req.body;
+ registerUser = async (req, res) => {
+    const { username, password } = req.body;
 
     try {
-        // Check if the username or email already exists
-        const existingUser = await User.findOne({ $or: [{ username }, { email }, { phone }] });
+        // Check if the username already exists
+        const existingUser = await User.findOne({ username });
 
         if (existingUser) {
-            return res.status(400).json({ success: false, error: 'Username, email, or phone number already exists' });
+            return res.status(400).json({ success: false, error: 'Username already exists' });
         }
 
         // Create a new user
-        const newUser = new User({ username, password, email, phone });
+        const newUser = new User({ username, password });
         await newUser.save();
 
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
-            user: { id: newUser._id, username: newUser.username, email: newUser.email, phone: newUser.phone }
+            user: { id: newUser._id, username: newUser.username }
         });
     } catch (error) {
         res.status(500).json({ success: false, error: 'User registration failed' });
     }
 };
-
 
 checkServiceRunning = (req, res) => {
     res.send('Hello World! - from users service');
