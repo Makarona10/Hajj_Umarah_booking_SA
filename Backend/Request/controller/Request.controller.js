@@ -3,8 +3,9 @@ const util = require("util");
 
 const create = async (req, res) => {
     try {
-        const appointmentId = req.params.appid;
-        const userId = req.params.userid;
+     
+        const { appointmentId} = req.params;
+        const { userId, userEmail } = req; 
         const query = util.promisify(conn.query).bind(conn);
         const { token } = req.headers;
         const requset = {

@@ -1,5 +1,6 @@
 const User = require('../models/user-model')
-
+const jwt = require('jsonwebtoken');
+const secretKey = 'secret_key'; 
 //login user
 checkUserAuth = async (req, res) => {
     const {username, password} = req.body;
@@ -19,9 +20,11 @@ checkUserAuth = async (req, res) => {
                 message: 'User is Unauthorized!',
             })
         } else {
+            const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, { expiresIn: '1h' });
             return res.status(200).json({
                 success: true,
                 id: user._id,
+                token,
                 message: 'User is authorized!',
             })
         }

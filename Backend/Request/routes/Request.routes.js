@@ -1,8 +1,9 @@
 const router = require("express").Router();
-const controller = require("../controller/Request.controller")
+const controller = require("../controller/Request.controller");
+const authenticateJWT = require("../middleware/authenticateJWT");
 
 
-router.post("/create/:appid/:userid", controller.create);
+router.post("/create/:appid", authenticateJWT,controller.create);
 
 router.get("/all", controller.list_all);
 
