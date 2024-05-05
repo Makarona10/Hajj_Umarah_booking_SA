@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const secretKey = 'your_secret_key'; // Same secret key used in users_service
+const secretKey = 'secret_key'; // Same secret key used in users_service
 
 const authenticateJWT = (req, res, next) => {
     const token = req.headers.authorization;
