@@ -58,9 +58,6 @@ services:
       - users_db
     depends_on:
       - users_db
-    # volumes:
-    #   - ./users_service:/app
-    #   - /app/node_modules
   users_db:
     image: mongo:3.6.19-xenial
     ports:
