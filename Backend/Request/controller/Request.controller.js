@@ -2,29 +2,30 @@ const conn = require("../db/dbConnection");
 const util = require("util");
 
 const create = async (req, res) => {
-    try {
+    // try {
      
-        const { appointmentId} = req.params;
-        const { userId, userEmail } = req; 
-        const query = util.promisify(conn.query).bind(conn);
-        const { token } = req.headers;
-        const requset = {
-            appointment_id: appointmentId,
-            traveler_id: userId,
-        };
-        await query("insert into appointment_requests set ? ", requset);
-        res.status(200).json({
-            msg: "created successfully !",
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
+    //     const { appointmentId} = req.params;
+    //     const { userId, userEmail } = req; 
+    //     const query = util.promisify(conn.query).bind(conn);
+    //     const { token } = req.headers;
+    //     const requset = {
+    //         appointment_id: appointmentId,
+    //         traveler_id: userId,
+    //     };
+    //     await query("insert into appointment_requests set ? ", requset);
+    //     res.status(200).json({
+    //         msg: "created successfully !",
+    //     });
+    // } catch (err) {
+    //     res.status(500).json(err);
+    // }
+    res.send();
 }
 
 const list_all = async (req, res) => {
     const query = util.promisify(conn.query).bind(conn);
     const requests = await conn.query(
-        "SELECT appointment_requests.id, users.email, appointments.from_where, appointments.to_where ,appointment_requests.status, appointments.day_and_time  , appointments.max_number_of_travelers ,appointments.number_of_traveler , appointments.id as appid FROM appointment_requests join appointments join users WHERE appointment_id=appointments.id and traveler_id=users.id;"
+        "SELECT appointment_requests.id, users.email, appointments.from_where, appointments.to_where, appointments.day_and_time, appointments.id as appid FROM appointment_requests join appointments join users WHERE appointment_id=appointments.id and traveler_id=users.id;"
     );
     if (!requests[0]) {
         res.status(404).json({ ms: "appointment not found !" });

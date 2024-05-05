@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'secret_key';
 //login user
 checkUserAuth = async (req, res) => {
-    const {username, password,email,phone} = req.body;
+    const {username, password} = req.body;
     const body = req.body;
 
     if (!body) {
@@ -32,7 +32,7 @@ checkUserAuth = async (req, res) => {
 }
 //register user
  registerUser = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email, phone} = req.body;
 
     try {
         // Check if the username already exists
@@ -43,7 +43,7 @@ checkUserAuth = async (req, res) => {
         }
 
         // Create a new user
-        const newUser = new User({ username, password });
+        const newUser = new User({ username, password, email, phone });
         await newUser.save();
 
         res.status(201).json({
