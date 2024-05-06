@@ -1,12 +1,38 @@
 
 const Omra = require('../models/omra-model')
-
-// Function to create a new Omra
-createOmra = async (req, res) => {
-    const { omraname, password,from_where,to_where,ticket_price,day_and_time } = req.body;
+/////////update
+updateOmra  = async (req, res) => {
+    const { id } = req.params;
+    const { max_num_trav } = req.body;
 
     try {
-        const newOmra = new Omra({ omraname, password,from_where,to_where,ticket_price,day_and_time });
+        const updatedOmra = await Omra.findByIdAndUpdate(id, { max_num_trav }, { new: true });
+
+        if (!updatedOmra) {
+            return res.status(404).json({
+                success: false,
+                error: 'Omra not found',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: updatedHajj,
+            message: 'Omra updated successfully',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message,
+        });
+    }
+};
+// Function to create a new Omra
+createOmra = async (req, res) => {
+    const { omraname, password,from_where,to_where,ticket_price,day_and_time,max_num_trav } = req.body;
+
+    try {
+        const newOmra = new Omra({ omraname, password,from_where,to_where,ticket_price,day_and_time,max_num_trav });
         await newOmra.save();
 
         res.status(201).json({
@@ -74,5 +100,6 @@ module.exports = {
     checkServiceRunning,
     createOmra,
     deleteOmra,
-    getAllOmras
+    getAllOmras,
+    updateOmra
 }

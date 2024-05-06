@@ -21,6 +21,17 @@ getHajjDetails(hajjId)
     .catch(err => {
         console.error('Failed to retrieve Hajj Details:', err);
     });
+    ////////////////// Update Hajj or Omra ////////////////////////////
+    async function updateOmra (omraId, new_max_num_trav) {
+        try {
+            const response = await axios.put(`http://omras_service_container/omra/update/${omraId}`, { max_num_trav: new_max_num_trav });
+            return response.data;
+        } catch (error) {
+            throw error.response ? error.response.data : error.message;
+        }
+    };
+    
+    /////////////////////////////////////////////////////////////////
 
 const create = async (req, res) => {
     // try {
