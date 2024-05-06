@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import SideBar from './SideBar';
-import Addapp from './Addapp';
+
 import Editapp from './Editapp';
 
 import { getAuthUser } from '../helper/Storage';
