@@ -1,28 +1,29 @@
 const conn = require("../db/dbConnection");
 const util = require("util");
+const axios = require("axios")
 
 async function getHajjInfoById(hajjId) {
     try {
-        const response = await axios.get(`http://localhost:5000/api/hajj/${hajjId}`);
+        const response = await axios.get(`http://hajjs_service:5000/api/hajj/${hajjId}`);
         return response.data;
-    } 
+    }
     catch (error) {
         console.error('Error fetching hajj info:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
-const hajjId = 'your_hajj_id_here';
-getHajjDetails(hajjId)
-    .then(hajjDetails => {
-        console.log('Retrieved Hajj Details:', hajjDetails);
-        const hajjfrom = hajjDetails.from_where;
-        console.log('Hajj From:', hajjfrom);
-    })
-    .catch(err => {
-        console.error('Failed to retrieve Hajj Details:', err);
-    });
+
 
 const create = async (req, res) => {
+    getHajjInfoById("6638f65f33dea8002ac5b8a0")
+        .then(hajjDetails => {
+            console.log('Retrieved Hajj Details:', hajjDetails);
+            const hajjfrom = hajjDetails.from_where;
+            console.log('Hajj From:', hajjfrom);
+        })
+        .catch(err => {
+            console.error('Failed to retrieve Hajj Details:', err);
+        });
     // try {
             
     //     const { appointmentId} = req.params;
