@@ -1,6 +1,11 @@
 version: "3.8"
 services:
-  
+  front:
+    build: ./Frontend
+    container_name: frontend_container
+    stdin_open: true
+    ports:
+      - "3000:3000"
   hajjs_service:
     build: ./Backend/hajjs_service
     container_name: hajjs_service_container
