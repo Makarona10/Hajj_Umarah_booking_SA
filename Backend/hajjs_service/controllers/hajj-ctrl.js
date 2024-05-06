@@ -1,23 +1,25 @@
 const Hajj = require('../models/hajj-model')
 
-updateHajj  = async (req, res) => {
+updateHajj = async (req, res) => {
     const { id } = req.params;
-    const { max_num_trav } = req.body;
-
     try {
-        const updatedHajj = await Hajj.findByIdAndUpdate(id, { max_num_trav }, { new: true });
-
-        if (!updatedHajj) {
+        const existingHajj = await Hajj.findById(id);
+        if (!existingHajj) {
             return res.status(404).json({
                 success: false,
                 error: 'Hajj not found',
             });
         }
+        const currentMaxNumTrav = existingHajj.max_num_trav;
+        currentMaxNumTrav -=1;
+        existingHajj.max_num_trav = currentMaxNumTrav;
+        const updatedHajj = await existingHajj.save();
 
+        // Respond with the updated max_num_trav value
         res.status(200).json({
             success: true,
-            data: updatedHajj,
-            message: 'Hajj updated successfully',
+            data: updatedHajj.max_num_trav,
+            message: 'max_num_trav decremented and updated successfully',
         });
     } catch (error) {
         res.status(500).json({
@@ -26,7 +28,6 @@ updateHajj  = async (req, res) => {
         });
     }
 };
-
 // Function to create a new hajj
 createHajj = async (req, res) => {
     const { hajjname, password,from_where,to_where,ticket_price,day_and_time,max_num_trav } = req.body;

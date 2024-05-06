@@ -7,7 +7,7 @@ router.post('/hajj', HajjCtrl.createHajj); // Route to create a new user
 router.delete('/hajj/:id', HajjCtrl.deleteHajj); // Route to delete a user
 router.get('/hajjs', HajjCtrl.getAllHajjs); // Route to get all users
 router.get('/', HajjCtrl.checkServiceRunning);
-router.put('/hajj/update/:id', HajjCtrl.updateHajj);
+router.patch('/hajj/update/:id', HajjCtrl.updateHajj);
 router.get('/hajj/:id', async (req, res) => {
     const { id } = req.params;
 
