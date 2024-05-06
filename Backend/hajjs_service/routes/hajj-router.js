@@ -1,6 +1,7 @@
 const express = require('express');
 const HajjCtrl = require('../controllers/hajj-ctrl');
 const router = express.Router();
+const Hajj = require('../models/hajj-model')
 
 router.post('/hajj', HajjCtrl.createHajj); // Route to create a new user
 router.delete('/hajj/:id', HajjCtrl.deleteHajj); // Route to delete a user
