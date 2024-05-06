@@ -131,8 +131,8 @@ const ManageAppointments = () => {
 				</button>
 			</main>
 
-			<Addapp OnAddAppointment={getAllAppointments} />
-			<Editapp id={editId} OnEditAppointment={getAllAppointments} />
+			 {/* <Addapp OnAddAppointment={getAllAppointments} />
+            <Editapp id={editId} OnEditAppointment={getAllAppointments} /> */}
 		</div>
 	);
 };
