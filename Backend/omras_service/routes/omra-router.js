@@ -7,6 +7,7 @@ router.post('/omra', OmraCtrl.createOmra); // Route to create a new Omra
 router.delete('/omra/:id', OmraCtrl.deleteOmra); // Route to delete a Omra
 router.get('/omras', OmraCtrl.getAllOmras); // Route to get all Omras
 router.get('/', OmraCtrl.checkServiceRunning);
+router.put('/omra/update/:id', OmraCtrl.updateOmra);
 router.get('/omra/:id', async (req, res) => {
     const { id } = req.params;
 

@@ -8,6 +8,7 @@ const Omra = new Schema(
         to_where: { type: String, required: true },
         ticket_price: { type: Number, required: true },
         day_and_time: { type: Date, required: true },
+        max_num_trav:{type:Number,require:true},
     },
     { timestamps: true },
 )
