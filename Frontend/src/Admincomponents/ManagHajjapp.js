@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import SideBar from './SideBar';
-import Addapp from './AddHajj';
+
 import Editapp from './Editapp';
 
 import { getAuthUser } from '../helper/Storage';
@@ -131,8 +131,8 @@ const ManageAppointments = () => {
 				</button>
 			</main>
 
-			<Addapp OnAddAppointment={getAllAppointments} />
-			<Editapp id={editId} OnEditAppointment={getAllAppointments} />
+			{/* <Addapp OnAddAppointment={getAllAppointments} />
+			<Editapp id={editId} OnEditAppointment={getAllAppointments} /> */}
 		</div>
 	);
 };
