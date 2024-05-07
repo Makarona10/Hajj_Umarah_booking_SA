@@ -51,7 +51,7 @@ const list_trans = async (req, res) => {
     const result = await db.query("SELECT * FROM inventory");
         res.status(200).send(result[0])
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
