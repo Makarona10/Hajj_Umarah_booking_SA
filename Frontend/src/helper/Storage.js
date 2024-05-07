@@ -1,18 +1,19 @@
 //LOCAL STORAGE
-export const setAuthUser = (id, email) => {
+export const setAuthUser = (id, email, token) => {
 
   // save object to the local storage
   // Stringify OBJECT TO TEXT
   localStorage.setItem("id", id);
   localStorage.setItem("email", email);
+  localStorage.setItem("token", token);
 };
 
 export const getAuthUser = () => {
   const id = localStorage.getItem("id");
   const email = localStorage.getItem("email");
-
-  if (id && email) {
-    return { id, email };
+  const token = localStorage.getItem("token");
+  if (id && email && token) {
+    return { id, email, token };
   }
 
   return null;
@@ -21,6 +22,7 @@ export const getAuthUser = () => {
 export const removeAuthUser = () => {
   if (localStorage.getItem("id")) localStorage.removeItem("id");
   if (localStorage.getItem("email")) localStorage.removeItem("email");
+  if (localStorage.getItem("token")) localStorage.removeItem("token");
 };
 export const isAuthenticated = () => {
   const user = localStorage.getItem("id");
@@ -28,6 +30,6 @@ export const isAuthenticated = () => {
 };
 
 export const isAdmin = () => {
-  const { id, email } = getAuthUser();
+  const { id, email, token } = getAuthUser();
   return email == "admin@admin.com"; // Check if token contains admin role
 };

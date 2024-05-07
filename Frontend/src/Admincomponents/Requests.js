@@ -17,7 +17,7 @@ const Requests = () => {
 		setrequests({ ...requests, loading: true });
 
 		try {
-			const resposne = await Axios.get('http://localhost:4000/request/all');
+			const resposne = await Axios.get('http://localhost:3002/request/all');
 
 			setrequests({
 				...requests,

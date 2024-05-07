@@ -17,6 +17,7 @@ const Register = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const {
 		register,
@@ -55,15 +56,10 @@ const Register = () => {
 			// console.log('submitted');
 
 			navigate('/login');//
-		} catch (error) {
-			// handle error response
-			console.log(error);
-			if (error.response) {
-				setError(error.response.data.errors[0].msg);
-				//alert(error.response.data.errors[0].msg);
-			} else {
-				setError('Something went wrong. Please try again later.');
-			}
+		} catch (err) {
+			const errorMessage =
+				err.response?.status === 400 || err.response?.status === 500 ? 'username or password are not avaliable' : 'Something went wrong';
+			setErrorMessage(errorMessage);
 		}
 	};
 
@@ -71,7 +67,11 @@ const Register = () => {
 		<>
 			<Header />
 			<div className={classes.wrapper}>
-				{error && <h4 className={classes.error}>{error}</h4>}
+				{errorMessage && (
+					<p className={classes.errorMessage}>
+						{errorMessage}
+					</p>
+				)}
 				<h2>Registration</h2>
 				<form onSubmit={submitHandler}>
 					<div className={classes['input-box']}>
@@ -84,7 +84,7 @@ const Register = () => {
 							value={username}
 							onChange={usernameChangeHandler}
 						/>
-						{errors.name && <p className={classes.error}>Enter your name</p>}
+
 					</div>
 					<div className={classes['input-box']}>
 						<label htmlFor='phone'>Phone</label>
@@ -96,7 +96,7 @@ const Register = () => {
 							value={phone}
 							onChange={phoneChangeHandler}
 						/>
-						{errors.name && <p className={classes.error}>Enter your phone</p>}
+
 					</div>
 					<div className={classes['input-box']}>
 						<label htmlFor='email'>Email</label>
@@ -108,12 +108,7 @@ const Register = () => {
 							value={email}
 							onChange={emailChangeHandler}
 						/>
-						{errors.email?.type === 'required' && (
-							<p className='error'>enter your email</p>
-						)}
-						{errors.email?.type === 'pattern' && (
-							<p className='error'>enter a valid email</p>
-						)}
+
 					</div>
 					<div className={classes['input-box']}>
 						<label htmlFor='password'>Password</label>
@@ -126,14 +121,7 @@ const Register = () => {
 							value={password}
 							onChange={passwordChangeHandler}
 						/>
-						{errors.password?.type === 'required' && (
-							<p className={classes.error}>Enter your password</p>
-						)}
-						{errors.password?.type === 'minLength' && (
-							<p className={classes.error}>
-								Password must be at least 8 characters
-							</p>
-						)}
+
 					</div>
 					<div className={classes['input-box']}>
 						<button className={classes['btn--submit']} type='submit'>
