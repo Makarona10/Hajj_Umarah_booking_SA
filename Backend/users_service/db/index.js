@@ -18,4 +18,8 @@ db.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
+if (mongoose.connection.readyState !== 1) {
+  throw new Error('Mongoose is not connected to the database');
+}
+
 module.exports = db;

@@ -72,30 +72,30 @@ services:
   #   volumes:
   #     - users-volume:/data/db
 
-  # transport:
-  #   build: ./Backend/Transportation
-  #   container_name: Transport_container
-  #   ports:
-  #     - "3001:3001"
-  #   depends_on:
-  #     - trans-DB
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
-  #   networks:
-  #     - ecommerce-app
+  transport:
+    build: ./Backend/Transportation
+    container_name: Transport_container
+    ports:
+      - "3001:3001"
+    depends_on:
+      - trans-DB
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - ecommerce-app
 
-  # trans-DB:
-  #   image: mysql:latest
-  #   container_name: trans-DB
-  #   environment:
-  #     MYSQL_DATABASE: trans
-  #     MYSQL_ROOT_PASSWORD: 1234
-  #   networks:
-  #     - ecommerce-app
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
-  #   ports:
-  #     - "3306:3306"
+  trans-DB:
+    image: mysql:latest
+    container_name: trans-DB
+    environment:
+      MYSQL_DATABASE: trans
+      MYSQL_ROOT_PASSWORD: 1234
+    networks:
+      - ecommerce-app
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   request:
     build: ./Backend/Request
