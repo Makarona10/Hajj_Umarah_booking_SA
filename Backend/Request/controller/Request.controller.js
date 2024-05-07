@@ -1,5 +1,4 @@
 const conn = require("../db/dbConnection");
-const util = require("util");
 const axios = require("axios")
 
 async function getHajjInfoById(hajjId) {
@@ -30,10 +29,12 @@ const updateMAX = async (trip_id, type) => {
         if (type === "hajj") {
             result = await axios.patch(`http://hajjs_service:5000/api/hajj/update/${trip_id}`)
             console.log(result);
+            return 1;
         }
         if (type === "umrah") {
             result = await axios.patch(`http://omras_service:5001/api/omra/update/${trip_id}`)
             console.log(result);
+            return 1;
         }
     } catch (error) {
         if (error.response) {
@@ -54,8 +55,8 @@ const create = async (req, res) => {
         conn.query(`INSERT INTO appointment_requests (appointment_id, traveler_id, type)
                     VALUES (?, ?, ?)`, [req.params.appid, req.userId, req.body.type]
         );
-        updateMAX(req.params.appid, req.body.type);
-        res.status(200).json({msg: "created successfully !"});
+        if (updateMAX(req.params.appid, req.body.type) === 1) res.status(200).json({msg: "created successfully !"});
+        else res.status(400).json({msg: "Please enter a valid trip type"})
     } catch (err) {
         res.status(500).json(err);
     }
