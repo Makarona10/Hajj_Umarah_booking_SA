@@ -8,9 +8,8 @@ mongoose
 
 const db = mongoose.connection;
 
-db.on('disconnected', () => {
-  console.log('Disconnected from MongoDB');
-});
-
+if (mongoose.connection.readyState !== 1) {
+  throw new Error('Mongoose is not connected to the database');
+}
 
 module.exports = db;

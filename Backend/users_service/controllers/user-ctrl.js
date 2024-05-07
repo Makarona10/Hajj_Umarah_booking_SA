@@ -36,9 +36,6 @@ registerUser = async (req, res) => {
 
     try {
         // Check if the username already exists
-        if (mongoose.connection.readyState !== 1) {
-            throw new Error('Mongoose is not connected to the database');
-        }
         const existingUser = await User.findOne({ username });
 
         if (existingUser) {
