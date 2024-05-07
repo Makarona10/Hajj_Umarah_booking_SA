@@ -14,108 +14,103 @@ async function getHajjInfoById(hajjId) {
 }
 
 
-getHajjDetails(hajjId)
-    .then(hajjDetails => {
-        console.log('Retrieved Hajj Details:', hajjDetails);
-        const hajjfrom = hajjDetails.from_where;
-        console.log('Hajj From:', hajjfrom);
-    })
-    .catch(err => {
-        console.error('Failed to retrieve Hajj Details:', err);
-    });
+// getHajjDetails(hajjId)
+//     .then(hajjDetails => {
+//         console.log('Retrieved Hajj Details:', hajjDetails);
+//         const hajjfrom = hajjDetails.from_where;
+//         console.log('Hajj From:', hajjfrom);
+//     })
+//     .catch(err => {
+//         console.error('Failed to retrieve Hajj Details:', err);
+//     });
 
-    async function updateOmra (omraId, new_max_num_trav) {
-        try {
-            const response = await axios.put(`http://omras_service_container/omra/update/${omraId}`, { max_num_trav: new_max_num_trav });
-            return response.data;
-        } catch (error) {
-            throw error.response ? error.response.data : error.message;
+const updateMAX = async (trip_id, type) => {
+    let result;
+    try {
+        if (type === "hajj") {
+            result = await axios.patch(`http://hajjs_service:5000/api/hajj/update/${trip_id}`)
+            console.log(result);
         }
-    };
-    
+        if (type === "umrah") {
+            result = await axios.patch(`http://omras_service:5001/api/omra/update/${trip_id}`)
+            console.log(result);
+        }
+    } catch (error) {
+        if (error.response) {
+            // Handle error response from axios
+            console.error("Error response:", error.response.data);
+            throw error.response.data;
+        } else {
+            // Handle other errors
+            console.error("Other error:", error.message);
+            throw error.message;
+        }
+    }
+};
+
 
 const create = async (req, res) => {
-    getHajjInfoById("6638f65f33dea8002ac5b8a0")
-        .then(hajjDetails => {
-            console.log('Retrieved Hajj Details:', hajjDetails);
-            const hajjfrom = hajjDetails.from_where;
-            console.log('Hajj From:', hajjfrom);
-        })
-        .catch(err => {
-            console.error('Failed to retrieve Hajj Details:', err);
-        });
-    // try {
-            
-    //     const { appointmentId} = req.params;
-    //     const { userId, userEmail } = req; 
-    //     const query = util.promisify(conn.query).bind(conn);
-    //     const { token } = req.headers;
-    //     const requset = {
-    //         appointment_id: appointmentId,
-    //         traveler_id: userId,
-    //     };
-    //     await query("insert into appointment_requests set ? ", requset);
-    //     res.status(200).json({
-    //         msg: "created successfully !",
-    //     });
-    // } catch (err) {
-    //     res.status(500).json(err);
-    // }
+    try {
+        conn.query(`INSERT INTO appointment_requests (appointment_id, traveler_id, type)
+                    VALUES (?, ?, ?)`, [req.params.appid, req.userId, req.body.type]
+        );
+        updateMAX(req.params.appid, req.body.type);
+        res.status(200).json({msg: "created successfully !"});
+    } catch (err) {
+        res.status(500).json(err);
+    }
     res.send();
 }
 
 const list_all = async (req, res) => {
-    const query = util.promisify(conn.query).bind(conn);
-    const requests = await conn.query(
-        "SELECT appointment_requests.id, users.email, appointments.from_where, appointments.to_where, appointments.day_and_time, appointments.id as appid FROM appointment_requests join appointments join users WHERE appointment_id=appointments.id and traveler_id=users.id;"
-    );
-    if (!requests[0]) {
-        res.status(404).json({ ms: "appointment not found !" });
+    let result = await conn.query(`SELECT * FROM appointment_requests`)
+    if (!result) {
+        res.status(404).json({ msg: "appointment not found !" });
     }
-    res.status(200).json(requests);
+    res.status(200).json(result[0]);
 }
 
-const accept_req = async (req, res) => {
-    try {
-        const query = util.promisify(conn.query).bind(conn);
-        // UPDATE appointment_requests SET status=pending 
-        await query(
-            "UPDATE appointment_requests SET status=  'accepted' where id = ?",
-            req.params.reqid
-        );
-        const number = await query(
-            "SELECT number_of_traveler FROM appointments WHERE id=?",
-            req.params.id
-        );
+// const accept_req = async (req, res) => {
+//     try {
+//         const query = util.promisify(conn.query).bind(conn);
+//         // UPDATE appointment_requests SET status=pending 
+//         await query(
+//             "UPDATE appointment_requests SET status=  'accepted' where id = ?",
+//             req.params.reqid
+//         );
+//         const number = await query(
+//             "SELECT number_of_traveler FROM appointments WHERE id=?",
+//             req.params.id
+//         );
 
-        const num = number[0].number_of_traveler;
-        const newNum = num + 1;
-        console.log(number);
-        await query(` UPDATE appointments SET number_of_traveler=${newNum}  WHERE id=?`, req.params.id);
-        res.status(200).json({
-            number
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-}
+//         const num = number[0].number_of_traveler;
+//         const newNum = num + 1;
+//         console.log(number);
+//         await query(`UPDATE appointments SET number_of_traveler=${newNum}  WHERE id=?`, req.params.id);
+//         res.status(200).json({
+//             number
+//         });
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// }
 
-const decline_req = async (req, res) => {
-    try {
-        const query = util.promisify(conn.query).bind(conn);
-        // UPDATE appointment_requests SET status=pending 
-        await query(
-            "UPDATE appointment_requests SET status=  'declined' where id = ?",
-            req.params.id
-        );
+// const decline_req = async (req, res) => {
+//     try {
+//         const query = util.promisify(conn.query).bind(conn);
+//         // UPDATE appointment_requests SET status=pending 
+//         await query(
+//             "UPDATE appointment_requests SET status= 'declined' where id = ?",
+//             req.params.id
+//         );
 
-        res.status(200).json({
-            msg: "rejected successfully !",
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-}
+//         res.status(200).json({
+//             msg: "rejected successfully !",
+//         });
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// }
 
 // const list_history = async (req, res) => { //user id
 //     const query = util.promisify(conn.query).bind(conn);
@@ -134,4 +129,4 @@ const decline_req = async (req, res) => {
 //     res.status(200).json(appointment);
 // }
 
-module.exports = {create, list_all, accept_req, decline_req}
+module.exports = { create, list_all }

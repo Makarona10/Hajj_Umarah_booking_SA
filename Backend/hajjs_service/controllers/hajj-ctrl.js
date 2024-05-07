@@ -3,14 +3,15 @@ const Hajj = require('../models/hajj-model')
 updateHajj = async (req, res) => {
     const { id } = req.params;
     try {
-        const existingHajj = await Hajj.findById(id);
+        let existingHajj = await Hajj.findById(id);
+        console.log("Heeeeeeeeeeeeeeeeeeeeeeeey");
         if (!existingHajj) {
             return res.status(404).json({
                 success: false,
                 error: 'Hajj not found',
             });
         }
-        const currentMaxNumTrav = existingHajj.max_num_trav;
+        let currentMaxNumTrav = existingHajj.max_num_trav;
         currentMaxNumTrav -=1;
         existingHajj.max_num_trav = currentMaxNumTrav;
         const updatedHajj = await existingHajj.save();

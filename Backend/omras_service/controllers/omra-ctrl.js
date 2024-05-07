@@ -3,15 +3,16 @@ const Omra = require('../models/omra-model')
 /////////update
 updateOmra = async (req, res) => {
     const { id } = req.params;
+    console.log("Heeeeeeeeeey");
     try {
-        const existingOmra = await Omra.findById(id);
+        let existingOmra = await Omra.findById(id);
         if (!existingOmra) {
             return res.status(404).json({
                 success: false,
                 error: 'Omra not found',
             });
         }
-        const currentMaxNumTrav = existingOmra.max_num_trav;
+        let currentMaxNumTrav = existingOmra.max_num_trav;
         currentMaxNumTrav -=1;
         existingOmra.max_num_trav = currentMaxNumTrav;
         const updatedOmra = await existingOmra.save();
