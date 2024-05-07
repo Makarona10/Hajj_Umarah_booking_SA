@@ -23,11 +23,7 @@ const SideBar = () => {
 						Umra Appointments
 					</Link>
 				</li>
-				<li>
-					<Link className={classes['link_name']} to='/manageTrav'>
-						Travelers
-					</Link>
-				</li>
+
 				<li>
 					<Link className={classes['link_name']} to='/requests'>
 						Requests

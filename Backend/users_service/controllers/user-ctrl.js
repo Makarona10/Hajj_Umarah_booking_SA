@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'secret_key';
 //login user
 checkUserAuth = async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     const body = req.body;
 
     if (!body) {
@@ -24,6 +24,7 @@ checkUserAuth = async (req, res) => {
             return res.status(200).json({
                 success: true,
                 id: user._id,
+                email: user.email,
                 token,
                 message: 'User is authorized!',
             })
@@ -31,8 +32,8 @@ checkUserAuth = async (req, res) => {
     })
 }
 //register user
- registerUser = async (req, res) => {
-    const { username, password, email, phone} = req.body;
+registerUser = async (req, res) => {
+    const { username, password, email, phone } = req.body;
 
     try {
         // Check if the username already exists

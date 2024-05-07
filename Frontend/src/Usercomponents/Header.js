@@ -21,7 +21,7 @@ const Header = () => {
 				<h1 className='textlogo'>Hajj&Umara</h1>
 			</div>
 			<nav className='navigation-menu'>
-				{auth && isAdmin() && <Link to='/managetrav'>Manage Travelers</Link>}
+
 				{auth && isAdmin() && <Link to='/manageHajjappoint'>manage Hajj appointments</Link>}
 				{auth && isAdmin() && <Link to='/manageumrahappoint'>Manage Umrah appointments</Link>}
 				{auth && isAdmin() && (

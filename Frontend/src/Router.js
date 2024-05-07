@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom';
-import ManagTrav from './Admincomponents/ManagTrav';
 import Show from './Admincomponents/Show';
 import Ma from './Admincomponents/ManagHajjapp';
 import Manageumrahapp from './Admincomponents/ManageUmrahapp';
@@ -18,10 +17,7 @@ export const router = createBrowserRouter([
 		path: '/',
 		element: <Tickets />,
 	},
-	{
-		path: '/managetrav',
-		element: isAuthenticated() && isAdmin() ? <ManagTrav /> : <Login />,
-	},
+
 	{
 		path: '/show/:id',
 		element: <Show />,
@@ -29,11 +25,13 @@ export const router = createBrowserRouter([
 	{
 		path: '/manageHajjappoint',
 		element: isAuthenticated() && isAdmin() ? <Ma /> : <Login />,
+
 	},
 
 	{
 		path: '/manageumrahappoint',
 		element: isAuthenticated() && isAdmin() ? <Manageumrahapp /> : <Login />,
+
 	},
 	{
 		path: '/requests',

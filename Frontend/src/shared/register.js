@@ -13,7 +13,7 @@ const Register = () => {
 
 	const [error, setError] = useState('');
 
-	const [name, setName] = useState('');
+	const [username, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
@@ -44,10 +44,10 @@ const Register = () => {
 		// Prevent reload after form submission
 		event.preventDefault();//
 
-		const data = { name, phone, email, password };
+		const data = { username, password, email, phone };
 		try {
 			const response = await Axios.post(
-				'http://localhost:4000/auth/register',
+				'http://localhost:5002/api/register',
 				data
 			);
 
@@ -81,7 +81,7 @@ const Register = () => {
 							name='name'
 							type='text'
 							required
-							value={name}
+							value={username}
 							onChange={usernameChangeHandler}
 						/>
 						{errors.name && <p className={classes.error}>Enter your name</p>}

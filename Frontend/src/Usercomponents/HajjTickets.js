@@ -19,13 +19,9 @@ const Tickets = () => {
 
 	useEffect(() => {
 		setticket({ ...ticket, loading: true });
-		Axios.get('http://localhost:4000/appointments/show', {
-			params: {
-				search: search,
-			},
-		})
+		Axios.get('http://localhost:5000/api/hajjs')
 			.then(resp => {
-				setticket({ ...ticket, results: resp.data, loading: false, err: null });
+				setticket({ ...ticket, results: resp.data.data, loading: false, err: null });
 			})
 			.catch(err => {
 				setticket({
@@ -36,45 +32,32 @@ const Tickets = () => {
 			});
 	}, [ticket.reload]);
 
-	const searchplace = e => {
-		e.preventDefault();
-		setticket({ ...ticket, reload: ticket.reload + 1 });
-		console.log(search);
-	};
 
 	return (
 		<>
 			<Header />
-			<form className={classes.searchForm} onSubmit={searchplace}  >
-				<input
-					type='text'
-					className={classes.searchTerm}
-					placeholder='search by country'
-					value={search}
-					onChange={e => setSearch(e.target.value)}
-				/>
-				<button type='submit' className={classes.searchButton}>
-					<i className='fa fa-search'></i>
-				</button>
-			</form>
+
 			<div className={classes.flex}>
-				{ticket.results.map(t => (
-					<Ticket
-						key={t.id}
-						image={t.image}
-						name={t.name}
-						from_where={t.from_where}
-						to_where={t.to_where}
-						ticket_price={t.ticket_price}
-						day_and_time={t.day_and_time}
-						id={t.id}
-					/>
+				{ticket.err ? (
+					<p className={classes.error}>{ticket.err}</p>
+				) :
+					Array.isArray(ticket.results) ? (
+						ticket.results.map(t => (
+							<Ticket
+								key={t.id}
+								name={t.hajjname}
+								from_where={t.from_where}
+								to_where={t.to_where}
+								ticket_price={t.ticket_price}
+								day_and_time={t.day_and_time}
+								id={t.id}
+							/>
+						))
+					) : (
+						<p>No results found.</p>
+					)
 
-
-
-
-
-				))}
+				}
 			</div>
 			<Footer />
 		</>

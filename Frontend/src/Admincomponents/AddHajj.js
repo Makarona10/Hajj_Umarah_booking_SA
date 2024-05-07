@@ -9,111 +9,69 @@ import classes from '../AdminStyle/AddAppointment.module.css';
 
 const Addapp = ({ OnAddAppointment }) => {
 	const auth = getAuthUser();
-	/*const [name, setName] = useState('');
-	const [from_where, setFrom] = useState('');
-	const [to_where, setTo] = useState('');
-	const [ticket_price, setPrice] = useState('');
-	const [day_and_time, setTime] = useState('');*/
-	const [movie, setMovie] = useState({
-		name: "",
-		from_where: "",
-		to_where: "",
-		ticket_price: "",
-		day_and_time: "",
-		err: "",
-		loading: false,
-		success: null,
-	});
-
-	const image = useRef(null);
-
-
-	//const image = useRef(null);
-	const submitHandler = (e) => {
-		e.preventDefault();
-		setMovie({ ...movie, loading: true });
-
-		const formData = new FormData();
-		formData.append("name", movie.name);
-		formData.append("from_where", movie.from_where);
-		formData.append("to_where", movie.to_where);
-		formData.append("ticket_price", movie.ticket_price);
-		formData.append("day_and_time", movie.day_and_time);
-		if (image.current.files && image.current.files[0]) {
-			formData.append("image", image.current.files[0]);
-		}
-		try {
-			axios.post(
-				'http://localhost:5000/hajj',
-				formData,
-				{
-					headers: {
-						token: auth.token,
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			).then((resp) => {
-				OnAddAppointment();
-				setMovie({
-					name: "",
-					from_where: "",
-					to_where: "",
-					ticket_price: "",
-					day_and_time: "",
-					err: null,
-					loading: false,
-					success: "Movie Created Successfully !",
-				});
-				image.current.value = null;
-			});
-
-			//reset();
-			hideModal();
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
+	const [hajjname, setHajjname] = useState("");
+	const [from_where, setFromWhere] = useState("");
+	const [to_where, setToWhere] = useState("");
+	const [ticket_price, setTicketPrice] = useState("");
+	const [day_and_time, setDayAndTime] = useState("");
+	const [max_num_trav, setMaxNumTrav] = useState("");
+	const [err, setErr] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(null);
 	const hideModal = () => {
 		const x = document.getElementById('add-appointment-modal');
 		x.style.display = 'none';
 	};
 
-	// const reset = () => {
 
+	const submitHandler = async (e) => {
+		e.preventDefault();
+		setLoading(true);
 
-	// 	setName('');
-	// 	setFrom('');
-	// 	setTo('');
-	// 	setPrice('');
-	// 	setTime('');
-	// 	//image.current.value = null;
-	// };
+		try {
+			const response = await axios.post(
+				'http://localhost:5000/api/hajj',
+				{ hajjname, from_where, to_where, ticket_price, day_and_time, max_num_trav }
+			);
 
+			OnAddAppointment();
+			setLoading(false)
+			setErr(null)
+			setSuccess(true)
+
+			hideModal();
+		} catch (error) {
+			console.error(error);
+			setLoading(false);
+			setErr(err.message);
+		}
+	};
 	return (
 		<form
 			id='add-appointment-modal'
 			className={classes['add-modal']}
-			onSubmit={submitHandler}>
-			<h4>Add Appointments</h4>
+			onSubmit={submitHandler}
+		>
+			<h4>Add Hajj Ticket</h4>
 			<div>
-				<label>Name</label>
+				<label>Hajj Appointment Name</label>
 				<input
 					type='text'
 					className='form-control'
 					required
-					value={movie.name}
-					onChange={(e) => setMovie({ ...movie, name: e.target.value })}
+					value={hajjname}
+					onChange={(e) => setHajjname(e.target.value)}
 				/>
 			</div>
+
 			<div>
 				<label>From</label>
 				<input
 					type='text'
 					className='form-control'
 					required
-					value={movie.from_where}
-					onChange={(e) => setMovie({ ...movie, from_where: e.target.value })}
+					value={from_where}
+					onChange={(e) => setFromWhere(e.target.value)}
 				/>
 			</div>
 			<div>
@@ -122,47 +80,40 @@ const Addapp = ({ OnAddAppointment }) => {
 					type='text'
 					className='form-control'
 					required
-					value={movie.to_where}
-					onChange={(e) => setMovie({ ...movie, to_where: e.target.value })}
+					value={to_where}
+					onChange={(e) => setToWhere(e.target.value)}
 				/>
 			</div>
 			<div>
-				<label>Ticket price</label>
+				<label>Ticket Price</label>
 				<input
 					type='text'
 					className='form-control'
 					required
-					value={movie.ticket_price}
-					onChange={(e) => setMovie({ ...movie, ticket_price: e.target.value })}
+					value={ticket_price}
+					onChange={(e) => setTicketPrice(e.target.value)}
 				/>
 			</div>
 			<div>
-				<label htmlFor='datetime'>Date and time</label>
+				<label>Date and Time</label>
 				<input
 					type='datetime-local'
-					id='datetime'
-					name='datetime'
 					className='form-control'
 					required
-					value={movie.day_and_time}
-					onChange={(e) => setMovie({ ...movie, day_and_time: e.target.value })}
+					value={day_and_time}
+					onChange={(e) => setDayAndTime(e.target.value)}
 				/>
 			</div>
-
-
 			<div>
-				<label> Image</label>
+				<label>Max Number of Travelers</label>
 				<input
-					type='file'
+					type='number'
 					className='form-control'
 					required
-					ref={image}
-
+					value={max_num_trav}
+					onChange={(e) => setMaxNumTrav(e.target.value)}
 				/>
 			</div>
-
-
-
 			<div className={classes['btn-box']}>
 				<button
 					className={classes['btn-cancel']}

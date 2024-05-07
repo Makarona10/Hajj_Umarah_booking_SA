@@ -49,10 +49,14 @@
 	box-shadow: 0 0px 5px 5px rgba(0, 0, 0, 0.2);
 	margin-bottom: 4rem;
 
-	width: 400px;
-	height: 550px;
+	width: 500px;
+	height: 350px;
 	margin-inline: auto;
 	flex-basis: 33.33333
+}
+
+.ticket h1 {
+	margin-bottom: 20px;
 }
 
 .ticket:last-of-type {
