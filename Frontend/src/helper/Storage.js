@@ -1,26 +1,33 @@
 //LOCAL STORAGE
+export const setAuthUser = (id, email) => {
 
-export const setAuthUser = (data) => {
   // save object to the local storage
   // Stringify OBJECT TO TEXT
-  localStorage.setItem("user", JSON.stringify(data));
+  localStorage.setItem("id", id);
+  localStorage.setItem("email", email);
 };
 
-export const getAuthUser = (data) => {
-  if (localStorage.getItem("user")) {
-    return JSON.parse(localStorage.getItem("user"));
+export const getAuthUser = () => {
+  const id = localStorage.getItem("id");
+  const email = localStorage.getItem("email");
+
+  if (id && email) {
+    return { id, email };
   }
+
+  return null;
 };
 
 export const removeAuthUser = () => {
-  if (localStorage.getItem("user")) localStorage.removeItem("user");
+  if (localStorage.getItem("id")) localStorage.removeItem("id");
+  if (localStorage.getItem("email")) localStorage.removeItem("email");
 };
 export const isAuthenticated = () => {
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem("id");
   return !!user; // Check if user exists
 };
 
 export const isAdmin = () => {
-  const user = getAuthUser();
-  return user && user.type == "admin"; // Check if token contains admin role
+  const { id, email } = getAuthUser();
+  return email == "admin@admin.com"; // Check if token contains admin role
 };

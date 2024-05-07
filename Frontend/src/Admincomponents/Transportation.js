@@ -31,7 +31,7 @@ const Transportation = () => {
 
 
     const fetchAllTrans = async () => {
-        const transportation = await axios.get('http://localhost:3001/transport/');
+        const transportation = await axios.get('http://Transport_container:3001/transport/');
         setTrans(transportation.data);
     };
 

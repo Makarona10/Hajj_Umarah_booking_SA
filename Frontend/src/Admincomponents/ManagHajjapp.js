@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import SideBar from './SideBar';
+import Add from './AddOmra';
 
-import Editapp from './Editapp';
 
 import { getAuthUser } from '../helper/Storage';
 
@@ -14,17 +14,18 @@ import '../App.css';
 const ManageAppointments = () => {
 	const [appointments, setAppointments] = useState([]);
 	const [editId, setEditId] = useState(null);
+	const [error, setError] = useState(null);
 	const auth = getAuthUser();
 
 	const getAllAppointments = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:5000/hajjs`
+				`http://localhost:5000/api/hajjs`
 			);
-			setAppointments(response.data);
-			console.log(response.data);
+			setAppointments(response.data.data);
+			console.log(response.data.data);
 		} catch (err) {
-			console.log(err);
+			setError('Failed to fetch appointments. Please try again later.');
 		}
 	};
 
@@ -43,14 +44,11 @@ const ManageAppointments = () => {
 	}
 	const handleDelete = async id => {
 		try {
-			await axios.delete(`http://localhost:5000/hajjs/${id}`, {
-				headers: {
-					token: auth.token,
-				},
-			});
+			await axios.delete(`http://localhost:5000/api/hajj/${id}`);
 			setAppointments(
 				appointments.filter(appointment => appointment.id !== id)
 			);
+			getAllAppointments();
 		} catch (err) {
 			console.log(err);
 		}
@@ -61,9 +59,11 @@ const ManageAppointments = () => {
 			<SideBar />
 
 			<main className={classes.main}>
-				<h2>Manage Appointments</h2>
+				<h2>Manage Umrah Appointments</h2>
 
-				{appointments.length > 0 && (
+				{error ? (
+					<p className={classes.error}>{error}</p>
+				) : appointments.length > 0 && (
 					<table className='table table-striped table-hover'>
 						<thead>
 							<tr>
@@ -77,8 +77,8 @@ const ManageAppointments = () => {
 						</thead>
 						<tbody>
 							{appointments.map(appointment => (
-								<tr key={appointment.id}>
-									<td>{appointment.name}</td>
+								<tr key={appointment._id}>
+									<td>{appointment.hajjname}</td>
 									<td>{appointment.from_where}</td>
 									<td>{appointment.to_where}</td>
 									<td>{appointment.ticket_price} EGP</td>
@@ -107,7 +107,7 @@ const ManageAppointments = () => {
 																'Are you sure you wish to delete this appointment?'
 															)
 														)
-															handleDelete(appointment.id);
+															handleDelete(appointment._id);
 													}}>
 													&#xE872;
 												</i>
@@ -119,20 +119,22 @@ const ManageAppointments = () => {
 						</tbody>
 					</table>
 				)}
-				{appointments.length === 0 && (
-					<h2 className='no-data'>No Appointments Found!</h2>
+				{!error && appointments.length === 0 && (
+					<h2 className='no-data'>No Hajj Tickets Found!</h2>
 				)}
-				<button
-					style={{ color: "black", background: "#d3b923", border: "none" }}
-					className='btn btn-success margin-bottom-md'
-					data-toggle='modal'
-					onClick={display}>
-					Add Appointment
-				</button>
+				{!error && (
+					<button
+						style={{ color: "black", background: "#d3b923", border: "none" }}
+						className='btn btn-success margin-bottom-md'
+						data-toggle='modal'
+						onClick={display}>
+						Add Appointment
+					</button>
+				)}
 			</main>
 
-			{/* <Addapp OnAddAppointment={getAllAppointments} />
-			<Editapp id={editId} OnEditAppointment={getAllAppointments} /> */}
+			<Add OnAddAppointment={getAllAppointments} />
+
 		</div>
 	);
 };

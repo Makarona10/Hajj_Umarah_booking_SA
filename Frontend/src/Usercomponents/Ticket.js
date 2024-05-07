@@ -57,8 +57,8 @@ const Ticket = (props) => {
 
 	return (
 		<li key={props.id} className={classes.ticket}>
-			<img src={props.image} alt={props.name} />
-			<h2>{props.name}</h2>
+
+			<h1>{props.name}</h1>
 			<h4>From: {props.from_where}</h4>
 			<h4>To: {props.to_where}</h4>
 			<h4>Ticket Price: {props.ticket_price}</h4>

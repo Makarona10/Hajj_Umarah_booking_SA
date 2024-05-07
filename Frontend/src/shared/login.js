@@ -9,10 +9,10 @@ import { setAuthUser, getAuthUser } from '../helper/Storage';
 import classes from './login.module.css';
 
 function Login() {
-	const auth = getAuthUser();
+	//const auth = getAuthUser();
 	const navigate = useNavigate();
 
-	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
 	const {
@@ -23,7 +23,7 @@ function Login() {
 	} = useForm();
 
 	const emailChangeHandler = event => {
-		setEmail(event.target.value);
+		setUsername(event.target.value);
 	};
 
 	const passwordChangeHandler = event => {
@@ -34,33 +34,24 @@ function Login() {
 		// Prevent reload after form submission
 		event.preventDefault();
 
-		const data = { email, password };
+		const data = { username, password };
 
 		try {
-			const result = await Axios.post('http://localhost:4000/auth/login', data);
-
-			setAuthUser(result.data);
-			if (result.data.type.toString() === 'admin') {
+			const result = await Axios.post('http://localhost:5002/api/user/auth', data);
+			console.log(result.data.id)
+			console.log(result.data.email)
+			setAuthUser(result.data.id, result.data.email);
+			if (result.data.email.toString() === 'admin@admin.com') {
 				console.log('it should navigate to ManageAppointments');
-				navigate('/managetrav');
+				navigate('/manageumrahappoint');
 			} else {
 				navigate('/hajjtickets');
 			}
+			console.log("login")
 		} catch (err) {
-			const errors = err.response.data;
+			const errors = err;
 
-			if (errors.err) {
-				setError('email', {
-					type: 'server',
-					// message: "wrong email"
-				});
-			}
-			if (errors.errors[0].msg) {
-				setError('password', {
-					type: 'server',
-					message: errors.errors[0].msg,
-				});
-			}
+
 		}
 	};
 
@@ -68,30 +59,21 @@ function Login() {
 		<>
 			<Header />
 			<div className={classes.wrapper}>
-				{errors.email && (
-					<p className={classes.error}>
-						{errors.email.message} Something went wrong with email
-					</p>
-				)}
-				{errors.password && (
-					<p className={classes.error}>
-						{errors.password.message} password at least 8 characters
-					</p>
-				)}
+
 				<h2>Login</h2>
 				<form onSubmit={submitHandler}>
 					<div className={classes['input-box']}>
-						<label htmlFor='email'>Email</label>
+						<label htmlFor='username'>User Name</label>
 						<input
-							id='email'
-							name='email'
+							id='username'
+							name='username'
 							type='text'
 							// placeholder='Enter your email'
 							required
-							{...register('email', {
+							{...register('username', {
 								pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
 							})}
-							value={email}
+							value={username}
 							onChange={emailChangeHandler}
 						/>
 					</div>
