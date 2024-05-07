@@ -4,7 +4,7 @@ import Axios from 'axios';
 import Header from './Header';
 
 import Footer from './Footer';
-import Ticket from './Ticket';
+import HTicket from './HTicket';
 
 import classes from '../UserStyle/Ticket.module.css';
 
@@ -43,14 +43,14 @@ const Tickets = () => {
 				) :
 					Array.isArray(ticket.results) ? (
 						ticket.results.map(t => (
-							<Ticket
+							<HTicket
 								key={t.id}
 								name={t.hajjname}
 								from_where={t.from_where}
 								to_where={t.to_where}
 								ticket_price={t.ticket_price}
 								day_and_time={t.day_and_time}
-								id={t.id}
+								id={t._id}
 							/>
 						))
 					) : (

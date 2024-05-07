@@ -4,7 +4,10 @@ updateHajj = async (req, res) => {
     const { id } = req.params;
     try {
         let existingHajj = await Hajj.findById(id);
+<<<<<<< HEAD
        
+=======
+>>>>>>> 95855479f104053605f8be2594be32beb836b9ad
         if (!existingHajj) {
             return res.status(404).json({
                 success: false,
@@ -81,7 +84,6 @@ deleteHajj = async (req, res) => {
 getAllHajjs = async (req, res) => {
     try {
         const hajjs = await Hajj.find();
-
         res.status(200).json({
             success: true,
             data: hajjs,

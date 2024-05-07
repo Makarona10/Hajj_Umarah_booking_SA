@@ -50,7 +50,7 @@ const Tickets = () => {
                                 to_where={t.to_where}
                                 ticket_price={t.ticket_price}
                                 day_and_time={t.day_and_time}
-                                id={t.id}
+                                id={t._id}
                             />
                         ))
                     ) : (

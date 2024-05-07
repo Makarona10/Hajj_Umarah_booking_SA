@@ -46,7 +46,7 @@ const EditTrans = ({ sort, onEditTrans }) => {
 
         try {
             const u_construct = 1;
-            await axios.patch(`http://localhost:3001/transport/modify/${sort}`, { u_construct }, {
+            await axios.patch(`http://localhost:3001/transportation//modify/${sort}`, { u_construct }, {
                 headers: {
                     token: auth.token,
                 },
@@ -65,7 +65,7 @@ const EditTrans = ({ sort, onEditTrans }) => {
 
         try {
             const u_construct = -1;
-            await axios.patch(`http://localhost:3001/transport/modify/${sort}`, { u_construct }, {
+            await axios.patch(`http://localhost:3001/transportation/modify/${sort}`, { u_construct }, {
                 headers: {
                     token: auth.token,
                 },
