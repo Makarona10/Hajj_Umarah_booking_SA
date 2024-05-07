@@ -12,10 +12,6 @@ checkUserAuth = async (req, res) => {
             error: 'username and password are required!',
         })
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 95855479f104053605f8be2594be32beb836b9ad
     User.findOne({ username: username, password: password }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
