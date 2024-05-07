@@ -7,7 +7,8 @@ const connection = mysql.createPool({
   port: 3306,
 }).promise();
 
-connection.query(`CREATE TABLE appointment_requests (
+
+connection.query(`CREATE TABLE IF NOT EXISTS appointment_requests (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   appointment_id VARCHAR(255) NOT NULL,
   traveler_id VARCHAR(255) NOT NULL,
