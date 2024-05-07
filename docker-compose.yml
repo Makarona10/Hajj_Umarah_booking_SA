@@ -26,29 +26,26 @@ services:
       - ecommerce-app
     volumes:
       - hajjs-volume:/data/db
-  # omras_service:
-  #   build: ./omras_service
-  #   container_name: omras_service_container
-  #   ports:
-  #     - "5001:5001"
-  #   networks:
-  #     - ecommerce-app
-  #   links:
-  #     - omras_db
-  #   restart: on-failure
-  #   depends_on:
-  #     - omras_db
-  #   volumes:
-  #     - ./omras_service:/app
-  #     - /app/node_modules
-  # omras_db:
-  #   image: mongo:3.6.19-xenial
-  #   ports:
-  #     - "27018:27017"
-  #   networks:
-  #     - ecommerce-app
-  #   volumes:
-  #     - omras-volume:/data/db
+  omras_service:
+    build: ./Backend/omras_service
+    container_name: omras_service_container
+    ports:
+      - "5001:5001"
+    networks:
+      - ecommerce-app
+    links:
+      - omras_db
+    depends_on:
+      - omras_db
+
+  omras_db:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27018:27017"
+    networks:
+      - ecommerce-app
+    volumes:
+      - omras-volume:/data/db
   users_service:
     build: ./Backend/users_service
     container_name: users_service_container
