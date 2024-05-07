@@ -9,17 +9,36 @@ mongoose
 
 const db = mongoose.connection;
 
-db.on("error", (err) => {
-  console.error("MongoDB connection error:", err);
-  // Additional error handling can be implemented here
+mongoose.connection.once('open', () => {
+  console.log('Connected to MongoDB');
 });
 
-db.once("open", () => {
-  console.log("Connected to MongoDB");
+// Event listener for disconnection
+mongoose.connection.on('disconnected', () => {
+  console.log('Disconnected from MongoDB');
 });
 
-if (mongoose.connection.readyState !== 1) {
-  throw new Error('Mongoose is not connected to the database');
-}
+// Event listener for reconnection
+mongoose.connection.on('reconnected', () => {
+  console.log('Reconnected to MongoDB');
+});
+
+// Event listener for connection errors
+mongoose.connection.on('error', (error) => {
+  console.error('Error connecting to MongoDB:', error.message);
+});
+
+// Event listener for process termination
+process.on('SIGINT', async () => {
+  try {
+      // Close the Mongoose connection when the process is terminated
+      await mongoose.connection.close();
+      console.log('Mongoose connection closed');
+      process.exit(0);
+  } catch (error) {
+      console.error('Error closing Mongoose connection:', error.message);
+      process.exit(1);
+  }
+});
 
 module.exports = db;
