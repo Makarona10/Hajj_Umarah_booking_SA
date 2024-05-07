@@ -1,10 +1,13 @@
-version: "3.8"
+version: "3"
+
 services:
-  front:
-    build: /Frontend
-    container_name: frontend-service-container
-    ports:
-      - "3000:3000"
+
+  # front:
+  #   build: /Frontend
+  #   container_name: frontend-service-container
+  #   ports:
+  #     - "3000:3000"
+
   hajjs_service:
     build: ./Backend/hajjs_service
     container_name: hajjs_service_container
@@ -26,6 +29,7 @@ services:
       - ecommerce-app
     volumes:
       - hajjs-volume:/data/db
+
   omras_service:
     build: ./Backend/omras_service
     container_name: omras_service_container
@@ -130,7 +134,7 @@ volumes:
     driver: local
   hajjs-volume:
     driver: local
-  test-volume:
+  omras-volume:
     driver: local
   users-volume:
     driver: local

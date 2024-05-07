@@ -12,7 +12,6 @@ checkUserAuth = async (req, res) => {
             error: 'username and password are required!',
         })
     }
-    console.log("HEEYFROMHERE!!");
     User.findOne({ username: username, password: password }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
