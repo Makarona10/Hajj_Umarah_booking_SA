@@ -4,7 +4,7 @@ updateHajj = async (req, res) => {
     const { id } = req.params;
     try {
         let existingHajj = await Hajj.findById(id);
-        console.log("Heeeeeeeeeeeeeeeeeeeeeeeey");
+       
         if (!existingHajj) {
             return res.status(404).json({
                 success: false,

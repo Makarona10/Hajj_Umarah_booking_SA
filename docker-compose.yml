@@ -130,7 +130,7 @@ volumes:
     driver: local
   hajjs-volume:
     driver: local
-  test-volume:
+  omras-volume:
     driver: local
   users-volume:
     driver: local
