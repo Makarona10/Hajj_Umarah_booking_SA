@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Axios from 'axios';
-
 import Header from '../Usercomponents/Header';
 import { setAuthUser, getAuthUser } from '../helper/Storage';
 
@@ -14,7 +13,7 @@ function Login() {
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-
+	const [errorMessage, setErrorMessage] = useState('');
 	const {
 		register,
 		handleSubmit,
@@ -38,20 +37,21 @@ function Login() {
 
 		try {
 			const result = await Axios.post('http://localhost:5002/api/user/auth', data);
-			console.log(result.data.id)
-			console.log(result.data.email)
-			setAuthUser(result.data.id, result.data.email);
+			console.log(result.data.id);
+			console.log(result.data.email);
+			setAuthUser(result.data.id, result.data.email, result.data.token);
+
 			if (result.data.email.toString() === 'admin@admin.com') {
 				console.log('it should navigate to ManageAppointments');
 				navigate('/manageumrahappoint');
 			} else {
 				navigate('/hajjtickets');
 			}
-			console.log("login")
+			console.log("login");
 		} catch (err) {
-			const errors = err;
-
-
+			const errorMessage =
+				err.response?.status === 401 ? 'Unauthorized' : 'Something went wrong';
+			setErrorMessage(errorMessage);
 		}
 	};
 
@@ -59,6 +59,11 @@ function Login() {
 		<>
 			<Header />
 			<div className={classes.wrapper}>
+				{errorMessage && (
+					<p className={classes.errorMessage}>
+						{errorMessage}
+					</p>
+				)}
 
 				<h2>Login</h2>
 				<form onSubmit={submitHandler}>

@@ -9,17 +9,34 @@ const Ticket = (props) => {
 	const [showForm, setShowForm] = useState(false);
 	const [sort, setSort] = useState('');
 	const [message, setMessage] = useState('');
+	const [err, setErr] = useState(null)
 	const user = getAuthUser();
 	const navigate = useNavigate();
 
 	const handleButtonClick = () => {
-		setShowForm(true);
-	};
+		request();
 
+	};
+	const type = "umrah"
 	const request = () => {
 		if (user) {
 			const id = user.id;
-			Axios.post(`http://localhost:3002/request/create/${props.id}/${id}`);
+			Axios.post(`http://localhost:3002/request/create/${props.id}`,
+				{ type: "Umrah" },
+				{
+					headers: {
+						authorization: user.token,
+						'Content-Type': 'application/json',
+					},
+				})
+
+				.then((response) => {
+					console.log("request created");
+					setShowForm(true);
+				})
+				.catch((error) => {
+					setErr("Something went wrong try sometime else");
+				});
 		} else {
 			navigate('/login');
 		}
@@ -33,14 +50,14 @@ const Ticket = (props) => {
 		event.preventDefault();
 
 		try {
-			const response = await Axios.post('http://localhost:3001/transport/', { sort });
+			const response = await Axios.post('http://localhost:3001/transportation/', { sort });
 
 			if (response.status === 200) {
 				const data = response.data;
 				console.log(data.msg); // Success message
 
 				// Make the request after successful reservation
-				request();
+
 				setMessage('Reservation successful');
 				console.log('Reservation successful');
 			} else {
@@ -63,6 +80,7 @@ const Ticket = (props) => {
 			<h4>To: {props.to_where}</h4>
 			<h4>Ticket Price: {props.ticket_price}</h4>
 			<h4>Day and Time: {props.day_and_time}</h4>
+			{err && <p>{err}</p>}
 			{message && <p>{message}</p>}
 			{!showForm ? (
 				<button onClick={handleButtonClick} id={classes.request}>

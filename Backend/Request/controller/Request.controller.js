@@ -55,8 +55,8 @@ const create = async (req, res) => {
         conn.query(`INSERT INTO appointment_requests (appointment_id, traveler_id, type)
                     VALUES (?, ?, ?)`, [req.params.appid, req.userId, req.body.type]
         );
-        if (updateMAX(req.params.appid, req.body.type) === 1) res.status(200).json({msg: "created successfully !"});
-        else res.status(400).json({msg: "Please enter a valid trip type"})
+        if (updateMAX(req.params.appid, req.body.type) === 1) res.status(200).json({ msg: "created successfully !" });
+        else res.status(400).json({ msg: "Please enter a valid trip type" })
     } catch (err) {
         res.status(500).json(err);
     }
